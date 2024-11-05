@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "reveal-sql-server", "reveal-sql-server.csproj", "{759C7864-F8F7-4D21-B9DB-DFBBC09B39EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "reveal-mysql", "reveal-mysql.csproj", "{759C7864-F8F7-4D21-B9DB-DFBBC09B39EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
