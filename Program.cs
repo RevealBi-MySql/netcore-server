@@ -24,12 +24,12 @@ builder.Services.AddControllers().AddReveal(builder =>
         // optional 
         .AddUserContextProvider<UserContextProvider>()
         // optional
-        .AddObjectFilter<ObjectFilterProvider>()
+        //.AddObjectFilter<ObjectFilterProvider>()
         // optional 
         //.AddDashboardProvider<DashboardProvider>()
 
         // Required.  Register any data source connector you are using.
-        .DataSources.RegisterMicrosoftSqlServer();
+        .DataSources.RegisterMySql();
 });
 
 builder.Services.AddEndpointsApiExplorer();

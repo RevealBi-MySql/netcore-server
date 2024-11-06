@@ -1,6 +1,6 @@
 ﻿using Reveal.Sdk;
 using Reveal.Sdk.Data;
-using Reveal.Sdk.Data.Microsoft.SqlServer;
+using Reveal.Sdk.Data.MySql;
 
 namespace RevealSdk.Server
 {
@@ -38,7 +38,7 @@ namespace RevealSdk.Server
             // Check that the incoming request is for the expected data source type
             // You can check the data source type, or any of the information in your UserContext to
             // set credentials
-            if (dataSource is RVSqlServerDataSource)
+            if (dataSource is RVMySqlDataSource)
             {
                 // for SQL Server, add a username, password and optional domain
                 // note these are just properties, you can set them from configuration, a key vault, a look up to 

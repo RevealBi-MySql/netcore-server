@@ -1,6 +1,6 @@
 ﻿using Reveal.Sdk;
 using Reveal.Sdk.Data;
-using Reveal.Sdk.Data.Microsoft.SqlServer;
+using Reveal.Sdk.Data.MySql;
 
 namespace RevealSdk.Server
 {
@@ -41,53 +41,71 @@ namespace RevealSdk.Server
             // You can set query properties based on the incoming requests
             // ****
 
-            if (dataSourceItem is RVSqlServerDataSourceItem sqlDsi)
+            if (dataSourceItem is RVMySqlDataSourceItem sqlDsi)
             {
                 // Ensure data source is updated
                 ChangeDataSourceAsync(userContext, sqlDsi.DataSource);
 
-
-                // *****
-                // Example of how to use a stored procedure with a paramter
-                // *****
-                if (sqlDsi.Id == "CustOrderHist")
+                // Set custom queries or stored procedures based on the dataSourceItem ID
+                if (sqlDsi.Id == "Products_Supplier")
                 {
-                    sqlDsi.Procedure = "CustOrderHist";
-                    sqlDsi.ProcedureParameters = new Dictionary<string, object> { { "@CustomerID", userContext.UserId } };
+                    sqlDsi.CustomQuery = "SELECT * FROM customer_orders";
+                    // You may add more filters or row-level security using userContext here
+                }
+                else if (sqlDsi.Id == "Customer_Orders")
+                {
+                    sqlDsi.CustomQuery = $"SELECT * FROM customer_orders_details WHERE customer_id = {userContext.UserId}";
+                }
+                else if (sqlDsi.Id == "sp_Customer_Orders")
+                {
+                    sqlDsi.Procedure = "sp_customer_orders";
+                    sqlDsi.ProcedureParameters = new Dictionary<string, object>
+                    {
+                        { "customer", userContext.UserId }
+                    };
                 }
 
-                // *****
-                // Example of how to use a stored procedure with a parameter
-                // *****
-                else if (sqlDsi.Id == "CustOrdersOrders")
-                {
-                    sqlDsi.Procedure = "CustOrdersOrders";
-                    sqlDsi.ProcedureParameters = new Dictionary<string, object> { { "@CustomerID", userContext.UserId } };
-                }
+                //// *****
+                //// Example of how to use a stored procedure with a paramter
+                //// *****
+                //if (sqlDsi.Id == "CustOrderHist")
+                //{
+                //    sqlDsi.Procedure = "CustOrderHist";
+                //    sqlDsi.ProcedureParameters = new Dictionary<string, object> { { "@CustomerID", userContext.UserId } };
+                //}
 
-                // *****
-                // Example of how to use a stored procedure with no parameter
-                // *****
-                else if (sqlDsi.Id == "TenMostExpensiveProducts")
-                {
-                    sqlDsi.Procedure = "Ten Most Expensive Products";
-                }
+                //// *****
+                //// Example of how to use a stored procedure with a parameter
+                //// *****
+                //else if (sqlDsi.Id == "CustOrdersOrders")
+                //{
+                //    sqlDsi.Procedure = "CustOrdersOrders";
+                //    sqlDsi.ProcedureParameters = new Dictionary<string, object> { { "@CustomerID", userContext.UserId } };
+                //}
 
-                // *****
-                // Example of how to use an ad-hoc query with a parameter
-                // *****
-                else if (sqlDsi.Id == "CustomerOrders")
-                {
-                    sqlDsi.CustomQuery = "Select * from Orders Where OrderId = " + userContext.Properties["OrderId"];
-                }
+                //// *****
+                //// Example of how to use a stored procedure with no parameter
+                //// *****
+                //else if (sqlDsi.Id == "TenMostExpensiveProducts")
+                //{
+                //    sqlDsi.Procedure = "Ten Most Expensive Products";
+                //}
 
-                // *****
-                // Example of how check a request for a table / view and add a paramterized query
-                // *****
-                else if (sqlDsi.Table == "OrdersQry")
-                {
-                    sqlDsi.CustomQuery = "Select * from OrdersQry where customerId = '" + userContext.UserId + "'";
-                }
+                //// *****
+                //// Example of how to use an ad-hoc query with a parameter
+                //// *****
+                //else if (sqlDsi.Id == "CustomerOrders")
+                //{
+                //    sqlDsi.CustomQuery = "Select * from Orders Where OrderId = " + userContext.Properties["OrderId"];
+                //}
+
+                //// *****
+                //// Example of how check a request for a table / view and add a paramterized query
+                //// *****
+                //else if (sqlDsi.Table == "OrdersQry")
+                //{
+                //    sqlDsi.CustomQuery = "Select * from OrdersQry where customerId = '" + userContext.UserId + "'";
+                //}
 
                 //else return null;
             }
@@ -103,10 +121,10 @@ namespace RevealSdk.Server
             // you can also check the incoming dataSource type or id to set connection properties
             // *****
 
-            if (dataSource is RVSqlServerDataSource sqlServerDataSourceItem)
+            if (dataSource is RVMySqlDataSource SqlDsi)
             {
-                sqlServerDataSourceItem.Host = _config["SqlServer:Host"]; 
-                sqlServerDataSourceItem.Database = _config["SqlServer:Database"];
+                SqlDsi.Host = _config["SqlServer:Host"];
+                SqlDsi.Database = _config["SqlServer:Database"];
             }
             return Task.FromResult(dataSource);
         }

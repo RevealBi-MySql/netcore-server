@@ -51,6 +51,8 @@ namespace RevealSdk.Server
 
             Console.WriteLine("UserContextProvider: " + userId + " " + orderId + " " + employeeId);
 
+            userId = "11";
+
             return new RVUserContext(userId, props);
         }
     }

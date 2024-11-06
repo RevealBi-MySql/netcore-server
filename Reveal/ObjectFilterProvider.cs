@@ -1,6 +1,6 @@
 ﻿using Reveal.Sdk;
 using Reveal.Sdk.Data;
-using Reveal.Sdk.Data.Microsoft.SqlServer;
+using Reveal.Sdk.Data.MySql;
 
 namespace RevealSdk.Server
 {
@@ -29,7 +29,7 @@ namespace RevealSdk.Server
             // If the logged in user is an Admin role, they see all the Tables, Views, Sprocs, if not, 
             // they will only see the 'All Orders' and 'Invoices' tables.
             // ****
-            if (userContext?.Properties != null && dataSourceItem is RVSqlServerDataSourceItem dataSQLItem)
+            if (userContext?.Properties != null && dataSourceItem is RVMySqlDataSourceItem dataSQLItem)
             {
                 if (userContext.Properties.TryGetValue("Role", out var roleObj) &&
                     roleObj?.ToString()?.ToLower() == "user")
